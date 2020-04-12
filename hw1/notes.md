@@ -11,8 +11,18 @@
         * Compute loss
         * Return a optimization OP
 
+
+* 5-tuple
+  * `o`: observation, ndarray of some shape
+  * `a`: action, ndarray of some shape
+  * `o_next`
+  * `r`: float number
+  * `t`: bool
+  
+* path: an dictionary containing episode info.
+  
 * Replaybuffer:
-    * Is a very large queue of sequential `(o, a, o_next, r, t)` 5-tuple
+    * A very large FIFO queue of sequential `(o, a, o_next, r, t)` 5-tuple, with a maximum queue size 1000000
     * Stores sequentially the following
         * observations
         * actions
@@ -20,15 +30,15 @@
         * rewards
         * terminals 
     * Has a method that 
-        * Takes several episodes
+        * Takes several paths as input
         * Appends the above things sequentially
-    * Has a method that samples a batch of the above 
+    * Has a method that, given a batch size samples a batch of the above 
 
 * Policy:
     * Has an MLP graph
     * Has an optimization OP
     * Given a batch of observations, return a batch of actions, using the MLP graph
-    * Given a batch of observations and a batch of actions, update the policy, using the optimization OP
+    * Given a batch of observations and a batch of actions, do one step update of the policy, using the optimization OP
 
 * Agent: 
     * Has a replay buffer
