@@ -53,16 +53,24 @@
     * Method:
         * Samples a batch from the replaybuffer
 
-
 # Training loop:
+
+
 
 
 Critical hyperparameters:
 * `n_iter`: number of Dagger iteration loops. Set to 100
-* `initial_batch_size`: how many **new** 5-tuples to collect for the first iteration
 * `batch_size`: how many **new** 5-tuples to collect for each iteration
 * `train_batch_size`: training batch size
 * `train_steps`: within each Dagger iteration, how many gradient updates to do.
+
+
+
+The most important and difficult hyparameter is `batch_size`, how many new tuples to collect. Other things:
+
+* `n_iter`: can be determined with tensorboard. the larger the better
+* `train_batch_size`: as used in DL
+* `train_steps`: the larger the better.
 
 ```python
 policy = random_policy(lr=1e-3)
@@ -77,6 +85,7 @@ train_steps = T
 for i in range(n_iter):
   if i == 0:
 		# A list of lists. Inner lists contains 5-tuples.
+    # batch_size is not used here. the more the better
     paths = sample_trajectories(expert, expert, batch_size)
   else:
 		# A list of lists. Inner lists contains 5-tuples. The total length will be largers than B
