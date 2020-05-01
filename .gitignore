@@ -1,5 +1,8 @@
 .DS_Store
 .idea/
+logs/
+aux/
+out/
 cs285.egg-info/
 __pycache__/
 data/

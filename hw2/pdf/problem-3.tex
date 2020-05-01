@@ -1,0 +1,25 @@
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/p3.png}
+    \caption{Problem 3. Results are averaged over 5 seeds.}
+    \label{fig:p3}
+\end{figure}
+Please see Figure~\ref{fig:p3}.
+
+Questions:
+
+\begin{itemize}
+    \item Which value estimator has better performance without advantage-standardization: the trajectory-centric one, or the one using reward-to-go?
+    \begin{itemize}
+        \item Using reward-to-go is always better.
+    \end{itemize}
+    \item Did advantage standardization help?
+    \begin{itemize}
+        \item In these configurations, there is no evidence that it helps
+    \end{itemize}
+    \item Did the batch size make an impact?
+    \begin{itemize}
+        \item Yes. The model converges significantly faster with larger batch size.
+    \end{itemize}
+
+\end{itemize}

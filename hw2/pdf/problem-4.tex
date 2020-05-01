@@ -1,0 +1,17 @@
+\begin{figure}[htbp]
+    \begin{subfigure}[b]{0.5\linewidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{figures/p4-hyper.png}
+        \caption{Hyper-parameter search. Size indicates number of steps where the score is larger than 900.}
+        \label{fig:p4-hyper}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\linewidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{figures/p4-final.png}
+        \caption{With batch size 300, learning rate $0.02$.}
+        \label{fig:p4-final}
+    \end{subfigure}
+    \caption{Problem 4.}
+\end{figure}
+The hyper-parameter search in Figure~\ref{fig:p4-hyper} shows that the best configuration is when batch size is 300 and learning rate is $2e-2$. So I am 
+using this. See Figure~\ref{fig:p4-final} for the result. However even though this configuration reaches 1000 for the seed that we choose, it is actually very unstable.

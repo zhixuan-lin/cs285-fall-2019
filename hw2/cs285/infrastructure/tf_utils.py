@@ -7,6 +7,30 @@ import tensorflow as tf
 def build_mlp(input_placeholder, output_size, scope, n_layers, size, activation=tf.tanh, output_activation=None):
     
     # TODO: GETTHIS from HW1
+    """
+        Builds a feedforward neural network
+
+        arguments:
+            input_placeholder: placeholder variable for the state (batch_size, input_size)
+            scope: variable scope of the network
+
+            n_layers: number of hidden layers
+            size: dimension of each hidden layer
+            activation: activation of each hidden layer
+
+            output_size: size of the output layer
+            output_activation: activation of the output layer
+
+        returns:
+            output_placeholder: the result of a forward pass through the hidden layers + the output layer
+    """
+    output_placeholder = input_placeholder
+    with tf.variable_scope(scope):
+        for _ in range(n_layers):
+            output_placeholder = tf.layers.dense(output_placeholder, size, activation) # HINT: use tf.layers.dense (specify <input>, <size>, activation=<?>)
+        output_placeholder = tf.layers.dense(output_placeholder, output_size, output_activation) # HINT: use tf.layers.dense (specify <input>, <size>, activation=<?>)
+    return output_placeholder
+
 
 
 ############################################
@@ -27,6 +51,7 @@ def create_tf_session(use_gpu, gpu_frac=0.6, allow_gpu_growth=True, which_gpu=0)
             inter_op_parallelism_threads=1,
             intra_op_parallelism_threads=1)
         # set env variable to specify which gpu to use
+        import os
         os.environ["CUDA_VISIBLE_DEVICES"] = str(which_gpu)
     else:
         # TF config without gpu
