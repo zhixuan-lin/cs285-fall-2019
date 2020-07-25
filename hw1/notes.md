@@ -41,23 +41,6 @@ for i in range(n_iter):
     agent.train(batch)
 ```
 
-So data:
-
-* Data
-  * initial: tuples from episodes of your expert
-  * Else: collect a certain number of tuples with the policy
-* add to buffer
-* train using the **buffer**.
-
-
-The most important thing seems to be `n_iter`, `train_steps`, and `batch_size`
-
-
-
-
-
-
-
 Control:
 
 * Number of data: fixed, 2000
