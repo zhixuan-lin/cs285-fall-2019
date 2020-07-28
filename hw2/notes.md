@@ -25,11 +25,11 @@ for i in range(n_iter):
         q_values = sum_rewards(batch)
         nn_baselines = baseline(observations)
         advantages = q_value - nn_baselines
-        # Normalize. Note this is not average baseline. It is something else.
+        # Advantage normalization. Note this is not average baseline. It is something else.
         advantages = normalize_over_batch(advantages)
         # Do one gradient update
         agent.train(advantages, batch)
-        # Do one gradient update. Yes, only one, because the batch size is huge. It doesn't work very well though. Not very useful
+        # Do one gradient update to. Yes, only one, because the batch size is huge. In actor-critic this will not work, because the target is wrong in actor-critic. Refer to HW3
         agent.update_baseline(q_values, batch)
 ```
 
