@@ -8,7 +8,7 @@ from cs285.infrastructure.dqn_utils import get_env_kwargs
 
 class Q_Trainer(object):
 
-    def __init__(self, params):
+    def __init__(self, params, **overwrite_env_args):
         self.params = params
 
         train_args = {
@@ -19,6 +19,9 @@ class Q_Trainer(object):
         }
 
         env_args = get_env_kwargs(params['env_name'])
+
+        for key in overwrite_env_args:
+            env_args[key] = overwrite_env_args[key]
 
         self.agent_params = {**train_args, **env_args, **params}
 
@@ -62,6 +65,8 @@ def main():
 
     parser.add_argument('--save_params', action='store_true')
 
+    parser.add_argument('--target_update_freq', type=int)
+
     args = parser.parse_args()
 
     # convert to dictionary
@@ -88,7 +93,13 @@ def main():
 
     print("\n\n\nLOGGING TO: ", logdir, "\n\n\n")
 
-    trainer = Q_Trainer(params)
+    overwrite_env_args = {}
+    if args.target_update_freq is not None:
+        overwrite_env_args['target_update_freq'] = args.target_update_freq
+    else:
+        del params['target_update_freq']
+
+    trainer = Q_Trainer(params, **overwrite_env_args)
     trainer.run_training_loop()
 
 

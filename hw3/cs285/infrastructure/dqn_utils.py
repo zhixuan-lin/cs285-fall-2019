@@ -329,7 +329,7 @@ class MemoryOptimizedReplayBuffer(object):
             Max number of transitions to store in the buffer. When the buffer
             overflows the old memories are dropped.
         frame_history_len: int
-            Number of memories to be retried for each observation.
+            Number of memories to be retrived for each observation.
         """
         self.lander = lander
 
@@ -349,6 +349,11 @@ class MemoryOptimizedReplayBuffer(object):
         return batch_size + 1 <= self.num_in_buffer
 
     def _encode_sample(self, idxes):
+        """Sample a batch from the buffer
+
+        Args:
+            idxes (list): a list of integer indices
+        """
         obs_batch      = np.concatenate([self._encode_observation(idx)[None] for idx in idxes], 0)
         act_batch      = self.action[idxes]
         rew_batch      = self.reward[idxes]

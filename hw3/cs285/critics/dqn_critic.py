@@ -35,6 +35,7 @@ class DQNCritic(BaseCritic):
         #####################
 
         # target q values, created with the placeholder that holds NEXT obs (i.e., t+1)
+        # (B, A)
         q_tp1_values = q_func(self.obs_tp1_ph, self.ac_dim, scope='target_q_func', reuse=False)
 
         if self.double_q:
@@ -42,7 +43,16 @@ class DQNCritic(BaseCritic):
             # In double Q-learning, the best action is selected using the Q-network that
             # is being updated, but the Q-value for this action is obtained from the
             # target Q-network. See page 5 of https://arxiv.org/pdf/1509.06461.pdf for more details.
-            TODO
+            # TODO
+            # (B, A)
+            q_tp1_values_online = q_func(self.obs_tp1_ph, self.ac_dim, scope='q_func', reuse=True)
+            # (B)
+            action_indices = tf.argmax(q_tp1_values_online, axis=1)
+            # Ideally, we can do q_tp1_values[range(B), action_indices]. But TF doesn't support this... So we need to use tf.gather, in weird ways
+            # (B, 2)
+            gather_indices = tf.stack([tf.range(tf.shape(action_indices, out_type=tf.int64)[0])
+            , action_indices], axis=1)
+            q_tp1 = tf.gather_nd(q_tp1_values, gather_indices)
         else:
             # q values of the next timestep
             q_tp1 = tf.reduce_max(q_tp1_values, axis=1)
@@ -54,7 +64,7 @@ class DQNCritic(BaseCritic):
             #currentReward + self.gamma * qValuesOfNextTimestep * (1 - self.done_mask_ph)
         # HINT2: see above, where q_tp1 is defined as the q values of the next timestep
         # HINT3: see the defined placeholders and look for the one that holds current rewards
-        target_q_t = TODO
+        target_q_t = self.rew_t_ph + self.gamma * (1 - self.done_mask_ph) * q_tp1
         target_q_t = tf.stop_gradient(target_q_t)
 
         #####################
@@ -62,7 +72,7 @@ class DQNCritic(BaseCritic):
         # TODO compute the Bellman error (i.e. TD error between q_t and target_q_t)
         # Note that this scalar-valued tensor later gets passed into the optimizer, to be minimized
         # HINT: use reduce mean of huber_loss (from infrastructure/dqn_utils.py) instead of squared error
-        self.total_error= TODO
+        self.total_error = tf.reduce_mean(huber_loss(self.q_t - target_q_t), axis=0)
 
         #####################
 
@@ -70,8 +80,9 @@ class DQNCritic(BaseCritic):
         # variables of the Q-function network and target network, respectively
         # HINT1: see the "scope" under which the variables were constructed in the lines at the top of this function
         # HINT2: use tf.get_collection to look for all variables under a certain scope
-        q_func_vars = TODO
-        target_q_func_vars = TODO
+        q_func_vars = tf.trainable_variables(scope='q_func')
+        target_q_func_vars = tf.trainable_variables(scope='target_q_func')
+
 
         #####################
 
