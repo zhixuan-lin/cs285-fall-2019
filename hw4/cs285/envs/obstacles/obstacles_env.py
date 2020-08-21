@@ -73,6 +73,7 @@ class Obstacles(gym.Env):
         #clear
         self.counter = 0
         self.plt.clf()
+        self.fig = self.plt.gcf()
 
         #return
         return self._get_obs()
@@ -161,6 +162,7 @@ class Obstacles(gym.Env):
 
     def render(self, mode=None):
 
+        self.fig.clear()
         # boundaries
         self.plt.plot([self.boundary_min, self.boundary_min], [self.boundary_min, self.boundary_max], 'k')
         self.plt.plot([self.boundary_max, self.boundary_max], [self.boundary_min, self.boundary_max], 'k')
@@ -185,7 +187,7 @@ class Obstacles(gym.Env):
         # current and end
         self.plt.plot(self.end[0], self.end[1], 'go')
         self.plt.plot(self.current[0], self.current[1], 'ko')
-        self.plt.pause(0.1)
+        self.plt.pause(0.01)
 
         img = np.frombuffer(self.fig.canvas.tostring_rgb(), dtype=np.uint8)
         img = img.reshape(self.fig.canvas.get_width_height()[::-1] + (3,))
