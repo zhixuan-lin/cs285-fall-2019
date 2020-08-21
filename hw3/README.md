@@ -1,5 +1,7 @@
 # HW 3
 
+See `cs285/experiments/run.py`.
+
 ## Question 3
 
 ```python
