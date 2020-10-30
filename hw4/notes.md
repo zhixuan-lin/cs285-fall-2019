@@ -11,7 +11,7 @@ Important hyperparamters:
 * `emsemble_size`: number of ensemble models. Roughly 3 or 5
 * `horizon`: number of steps to look ahead. Roughly 10
 * `num_seq`: number of action sequences to try. Roughly 1000
-* `num_agent_train_steps_per_iter`: how many gradient steps to take for each iteration
+* `num_agent_train_steps_per_iter`: how many gradient steps to take for each iteration. Roughly 20 to 1000, depending on problem size.
 
 
 The algorithm:
